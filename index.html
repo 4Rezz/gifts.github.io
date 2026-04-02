@@ -2,7 +2,10 @@
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
+    />
     <meta
       name="description"
       content="Найкращому сонечку Софійці — від найсильнішого фаната й коханого Романа"
@@ -15,6 +18,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="solitaire.css" />
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
@@ -869,6 +873,33 @@
       </p>
     </footer>
 
+    <button type="button" class="solitaire-launch" id="solitaireOpen">Косинка</button>
+
+    <div
+      id="solitaireOverlay"
+      class="solitaire-overlay"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="solitaireTitle"
+    >
+      <div class="solitaire-overlay__panel">
+        <header class="solitaire-toolbar">
+          <h2 id="solitaireTitle" class="solitaire-toolbar__title">Косинка</h2>
+          <div class="solitaire-toolbar__actions">
+            <button type="button" class="solitaire-btn" id="solitaireNew">Нова гра</button>
+            <button type="button" class="solitaire-btn solitaire-btn--close" id="solitaireClose" aria-label="Закрити">
+              ×
+            </button>
+          </div>
+        </header>
+        <p class="solitaire-touch-hint">
+          На телефоні: другий тап по вже вибраній карті відправляє її в дім, якщо це дозволено правилами.
+        </p>
+        <div id="solitaireRoot" class="solitaire-root"></div>
+      </div>
+    </div>
+
     <div class="music-player">
       <audio id="musicAudio" src="audio/RomanScorpionKiss.mp3" preload="none" loop playsinline></audio>
       <button
@@ -901,5 +932,6 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="solitaire.js"></script>
   </body>
 </html>
