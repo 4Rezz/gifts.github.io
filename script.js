@@ -222,6 +222,26 @@
     });
   }
 
+  const tgChat = document.querySelector("[data-tg-chat]");
+  if (tgChat) {
+    if (prefersReduced) {
+      tgChat.classList.add("is-inview");
+    } else {
+      const tgObserver = new IntersectionObserver(
+        function (entries, obs) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-inview");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.18 }
+      );
+      tgObserver.observe(tgChat);
+    }
+  }
+
   const musicAudio = document.getElementById("musicAudio");
   const musicToggle = document.getElementById("musicToggle");
 
