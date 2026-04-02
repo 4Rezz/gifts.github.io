@@ -447,6 +447,32 @@ main,
   color: var(--text-muted);
 }
 
+.footer__dedication {
+  margin: 0;
+}
+
+.footer__rights {
+  margin: 1.25rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  line-height: 1.6;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer__rights a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+.footer__rights a:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
 /* Scroll reveal */
 .reveal {
   opacity: 0;
