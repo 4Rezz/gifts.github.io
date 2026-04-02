@@ -122,6 +122,37 @@
       </p>
     </footer>
 
+    <div class="music-player">
+      <audio id="musicAudio" src="audio/RomanScorpionKiss.mp3" preload="none" loop playsinline></audio>
+      <button
+        type="button"
+        class="music-player__btn"
+        id="musicToggle"
+        aria-label="Увімкнути музику"
+      >
+        <svg
+          class="music-player__icon music-player__icon--play"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M8 5v14l11-7L8 5z" />
+        </svg>
+        <svg
+          class="music-player__icon music-player__icon--pause"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" />
+        </svg>
+      </button>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>

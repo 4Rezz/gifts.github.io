@@ -221,4 +221,30 @@
       el.classList.add("is-visible");
     });
   }
+
+  const musicAudio = document.getElementById("musicAudio");
+  const musicToggle = document.getElementById("musicToggle");
+
+  function syncMusicButton() {
+    if (!musicToggle || !musicAudio) {
+      return;
+    }
+    const playing = !musicAudio.paused;
+    musicToggle.classList.toggle("is-playing", playing);
+    musicToggle.setAttribute("aria-label", playing ? "Пауза" : "Увімкнути музику");
+  }
+
+  if (musicAudio && musicToggle) {
+    musicToggle.addEventListener("click", function () {
+      if (musicAudio.paused) {
+        musicAudio.play().catch(function () {});
+      } else {
+        musicAudio.pause();
+      }
+    });
+    musicAudio.addEventListener("play", syncMusicButton);
+    musicAudio.addEventListener("pause", syncMusicButton);
+    musicAudio.addEventListener("ended", syncMusicButton);
+    syncMusicButton();
+  }
 })();

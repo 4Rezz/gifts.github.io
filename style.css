@@ -506,6 +506,108 @@ main,
   transition-delay: 0.72s;
 }
 
+/* Міні-плеєр: лише старт / пауза */
+.music-player {
+  position: fixed;
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  right: max(1.25rem, env(safe-area-inset-right, 0px));
+  z-index: 90;
+}
+
+.music-player__btn {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent-soft);
+  background: rgba(26, 20, 36, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.35s var(--ease),
+    color 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    transform 0.35s var(--ease);
+}
+
+.music-player__btn::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.music-player__btn:hover {
+  border-color: rgba(232, 180, 188, 0.55);
+  color: #fdf8fa;
+  box-shadow:
+    0 0 0 1px rgba(232, 180, 188, 0.15),
+    0 12px 36px rgba(0, 0, 0, 0.35);
+  transform: scale(1.04);
+}
+
+.music-player__btn:active {
+  transform: scale(0.98);
+}
+
+.music-player__btn.is-playing {
+  color: var(--gold);
+  border-color: rgba(212, 175, 122, 0.45);
+  box-shadow: 0 0 28px rgba(212, 175, 122, 0.18);
+}
+
+.music-player__btn.is-playing::before {
+  animation: musicPulse 2.2s var(--ease) infinite;
+}
+
+.music-player__icon {
+  display: block;
+  margin-left: 2px;
+}
+
+.music-player__icon--pause {
+  display: none;
+  margin-left: 0;
+}
+
+.music-player__btn.is-playing .music-player__icon--play {
+  display: none;
+}
+
+.music-player__btn.is-playing .music-player__icon--pause {
+  display: block;
+}
+
+.music-player__btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.music-player__btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@keyframes musicPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  70%,
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -520,5 +622,10 @@ main,
   }
   .compliment {
     animation: none;
+  }
+  .music-player__btn.is-playing::before {
+    animation: none;
+    opacity: 0.2;
+    transform: scale(1.08);
   }
 }
