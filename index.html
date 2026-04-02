@@ -1,90 +1,97 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-p {
-  text-align: center;
-  font-size: 80px;
-  margin-top: 20%;
-  line-height: 100px;
-  font-family: Verdana, sans-serif;
-  font-weight: 900;
-  position: relative;
-  background: #e8e8e8;
-  overflow: hidden;
-  text-transform: uppercase;
-  text-align: center;
-}
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Присвячую найкращому сонечку — ти заслужила на це" />
+    <title>Найкращому сонечку ✦</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <canvas id="stars" aria-hidden="true"></canvas>
 
-p:before {
-  content: '';
-  position: absolute;
-  filter: blur(10px);
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  mix-blend-mode: screen;
-  background-image: repeating-linear-gradient(
--45deg
-, transparent, transparent 1em, #fc00e7 1em, #b622a9 50%), repeating-linear-gradient(
-45deg
-, #3089d6, #2367a0 1em, #f5f2f2 1em, #b3d7f5 50%);
-  background-size: 3em 3em, 2em 2em;
-  animation-name: ani;
-  animation-duration: 10s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-@keyframes ani {
-  from {
-  background-position: 0 0;
-  }
-  to {
-  background-position: 100% 0;
-  }
-}
-@media (max-width:690px) {  
-  p {font-size: 18px;}  
-}
-</style>
-</head>
-<body>
+    <header class="hero">
+      <p class="hero__eyebrow reveal">Присвячую найкращому сонечку</p>
+      <p class="hero__dedication reveal reveal--delay-1">Ти заслужила на це.</p>
+      <h1 class="hero__title reveal reveal--delay-2">
+        <span class="hero__for">Це для</span>
+        <span class="hero__name" id="herName" contenteditable="true" spellcheck="false"
+          >найкращого сонечка</span
+        >
+      </h1>
+      <p class="hero__lead reveal reveal--delay-3">
+        Сонечко, ти — та історія, яку я хочу перечитувати щодня. Ця сторінка — маленький космос лише
+        про тебе.
+      </p>
+      <button type="button" class="btn-ghost reveal reveal--delay-4" id="complimentBtn">
+        Натисни — комплімент
+      </button>
+      <p class="compliment" id="complimentText" hidden></p>
+    </header>
 
-<p id="demo"></p>
+    <main>
+      <section class="section section--cards" aria-labelledby="reasons-title">
+        <h2 id="reasons-title" class="section__title reveal">Чому ти, сонечко, особлива</h2>
+        <ul class="cards">
+          <li class="card reveal">
+            <span class="card__num">01</span>
+            <p class="card__text">Твій сміх звучить як дім, куди завжди хочеться повернутися.</p>
+          </li>
+          <li class="card reveal">
+            <span class="card__num">02</span>
+            <p class="card__text">Поруч з тобою світ стає м’якшим, чеснішим і сміливішим.</p>
+          </li>
+          <li class="card reveal">
+            <span class="card__num">03</span>
+            <p class="card__text">Ти надихаєш бути кращою версією себе — без тиску, лише любов’ю.</p>
+          </li>
+        </ul>
+      </section>
 
-<script>
-// Set the date we're counting down to
-var countDownDate = new Date("Dec 17, 2022 00:00:00").getTime();
+      <section class="section section--quote" aria-labelledby="quote-title">
+        <div class="quote-block reveal">
+          <h2 id="quote-title" class="visually-hidden">Послання</h2>
+          <blockquote class="quote">
+            <p>
+              Якщо б можна було зібрати всі зірки в одну фразу — вона б звучала просто:
+              <em>дякую, сонечко, що ти є.</em>
+            </p>
+          </blockquote>
+        </div>
+      </section>
 
-// Update the count down every 1 second
-var x = setInterval(function() {
+      <section class="section section--promises" aria-labelledby="promises-title">
+        <h2 id="promises-title" class="section__title reveal">Обіцяю</h2>
+        <ol class="promises reveal">
+          <li>Слухати не лише слова, а й тишу між ними.</li>
+          <li>Тримати твої таємниці так само бережно, як твої руки в холод.</li>
+          <li>Будувати з тобою плани — і маленькі, і зіркові.</li>
+        </ol>
+      </section>
 
-  // Get today's date and time
-  var now = new Date().getTime();
-    
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
-    
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-  // Output the result in an element with id="demo"
-  document.getElementById("demo").innerHTML = days + " День " + hours + " Годин "
-  + minutes + " Хвилин " + seconds + " Секунд ";
-    
-  // If the count down is over, write some text 
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "З ДНЕМ НАРОДЖЕННЯ! ❤";
-  }
-}, 1000);
-</script>
+      <section class="section section--finale" aria-labelledby="finale-title">
+        <div class="finale reveal">
+          <h2 id="finale-title" class="finale__title">І наостанок</h2>
+          <p class="finale__text">
+            Цей сайт можна зберегти в закладки — але головний подарунок не в коді, а в тому, що я
+            обираю тебе, сонечко, знову і знову.
+          </p>
+          <p class="finale__sign">З любов’ю <span class="finale__heart" aria-hidden="true">♥</span></p>
+        </div>
+      </section>
+    </main>
 
-</body>
+    <footer class="footer">
+      <p>Найкращому сонечку · зроблено з нуля — щоб ти це відчула.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
 </html>
