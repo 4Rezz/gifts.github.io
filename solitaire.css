@@ -44,16 +44,19 @@ body.solitaire-active {
   right: 0;
   bottom: 0;
   left: 0;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  padding-left: env(safe-area-inset-left, 0px);
   z-index: 220;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 0;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   background: linear-gradient(
     165deg,
     rgba(42, 22, 38, 0.94) 0%,
@@ -96,8 +99,9 @@ body.solitaire-active {
   width: 100%;
   max-width: min(1100px, 100%);
   min-width: 0;
-  min-height: 100%;
-  min-height: 100dvh;
+  min-height: 0;
+  flex: 1 1 auto;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0 clamp(0.75rem, 3vw, 1.5rem) max(1rem, env(safe-area-inset-bottom, 0px));
@@ -191,6 +195,8 @@ body.solitaire-active {
   overscroll-behavior: contain;
   touch-action: pan-x pan-y;
   box-sizing: border-box;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  scroll-padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
 }
 
 .solitaire-board-wrap {
@@ -226,9 +232,20 @@ body.solitaire-active {
     overflow-x: auto;
   }
 
+  /* Запас під нижню панель Safari / Chrome на телефоні — останні карти не ховаються */
+  .solitaire-root {
+    padding-bottom: max(2rem, calc(env(safe-area-inset-bottom, 0px) + 3.75rem));
+    scroll-padding-bottom: max(2rem, calc(env(safe-area-inset-bottom, 0px) + 3.75rem));
+  }
+
+  .solitaire-overlay__panel {
+    padding-bottom: max(1.25rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
+  }
+
   /* Усі 7 колон + проміжки вміщаються в ширину панелі (без обрізання) */
   .solitaire-board {
     --tbl-gap: 3px;
+    padding-bottom: max(2.25rem, calc(env(safe-area-inset-bottom, 0px) + 1.5rem));
     /* fallback, якщо браузер не знає cqw */
     --card-w: max(
       32px,
