@@ -17,11 +17,11 @@
   const nameEl = document.getElementById("herName");
 
   if (nameEl) {
-    const key = "giftPageHerName";
+    const key = "giftPageHerNameSofiyka";
     const saved = localStorage.getItem(key);
     if (saved) nameEl.textContent = saved;
     nameEl.addEventListener("blur", function () {
-      const t = nameEl.textContent.trim() || "найкращого сонечка";
+      const t = nameEl.textContent.trim() || "Софійки";
       nameEl.textContent = t;
       localStorage.setItem(key, t);
     });
