@@ -160,6 +160,80 @@ main,
   margin: 0 0 2rem;
 }
 
+.together-timer {
+  width: 100%;
+  max-width: 26rem;
+  margin: 0 0 1.75rem;
+  padding: 1.15rem 1.35rem;
+  text-align: center;
+  border-radius: var(--radius);
+  border: 1px solid rgba(232, 180, 188, 0.25);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+}
+
+.together-timer__main {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3.2vw, 1.65rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.together-timer__main .together-timer__prefix {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.55em;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.35em;
+}
+
+.together-timer__timers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0.5rem 0 0.85rem;
+}
+
+.together-timer__timer-block {
+  margin: 0;
+}
+
+.together-timer__timer-caption {
+  margin: 0 0 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.together-timer__clock {
+  margin: 0;
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.together-timer__clock--total {
+  font-size: clamp(1.05rem, 2.7vw, 1.35rem);
+  color: var(--gold);
+}
+
+.together-timer__since {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
 .btn-ghost {
   font-family: var(--font-body);
   font-weight: 500;
@@ -401,6 +475,9 @@ main,
 }
 .reveal--delay-5 {
   transition-delay: 0.6s;
+}
+.reveal--delay-6 {
+  transition-delay: 0.72s;
 }
 
 @media (prefers-reduced-motion: reduce) {

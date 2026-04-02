@@ -27,6 +27,124 @@
     });
   }
 
+  const TOGETHER_START = new Date(2026, 1, 2, 0, 25, 0, 0);
+  const MS_DAY = 86400000;
+  const MS_HOUR = 3600000;
+  const MS_MIN = 60000;
+  const MS_SEC = 1000;
+
+  function ukMonthWord(n) {
+    const a = Math.abs(n) % 100;
+    const b = n % 10;
+    if (a >= 11 && a <= 14) return "місяців";
+    if (b === 1) return "місяць";
+    if (b >= 2 && b <= 4) return "місяці";
+    return "місяців";
+  }
+
+  function ukDayWord(n) {
+    const a = Math.abs(n) % 100;
+    const b = n % 10;
+    if (a >= 11 && a <= 14) return "днів";
+    if (b === 1) return "день";
+    if (b >= 2 && b <= 4) return "дні";
+    return "днів";
+  }
+
+  function togetherParts(start, now) {
+    if (now < start) {
+      return { months: 0, days: 0, h: 0, m: 0, s: 0, before: true };
+    }
+
+    let months =
+      (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+    if (now.getDate() < start.getDate()) {
+      months--;
+    }
+    if (months < 0) {
+      months = 0;
+    }
+
+    let anchor = new Date(start.getTime());
+    anchor.setMonth(anchor.getMonth() + months);
+
+    while (anchor > now && months > 0) {
+      months--;
+      anchor = new Date(start.getTime());
+      anchor.setMonth(anchor.getMonth() + months);
+    }
+
+    let diffMs = now - anchor;
+    if (diffMs < 0) {
+      diffMs = 0;
+    }
+
+    const days = Math.floor(diffMs / MS_DAY);
+    const rem = diffMs - days * MS_DAY;
+    const h = Math.floor(rem / MS_HOUR);
+    const m = Math.floor((rem % MS_HOUR) / MS_MIN);
+    const s = Math.floor((rem % MS_MIN) / MS_SEC);
+
+    return { months, days, h, m, s, before: false };
+  }
+
+  function pad2(n) {
+    return String(n).padStart(2, "0");
+  }
+
+  function updateTogetherTimer() {
+    const elMain = document.getElementById("togetherMain");
+    const elClock = document.getElementById("togetherClock");
+    if (!elMain) {
+      return;
+    }
+
+    const now = new Date();
+    const p = togetherParts(TOGETHER_START, now);
+
+    const elTotal = document.getElementById("togetherTotal");
+
+    if (p.before) {
+      elMain.innerHTML =
+        '<span class="together-timer__prefix">Ми разом</span>зачекай трохи — таймер стартує 2.02.2026 о 00:25';
+      if (elClock) {
+        elClock.textContent = "";
+      }
+      if (elTotal) {
+        elTotal.textContent = "";
+      }
+      return;
+    }
+
+    elMain.innerHTML =
+      '<span class="together-timer__prefix">Ми разом</span>' +
+      p.months +
+      " " +
+      ukMonthWord(p.months) +
+      " і " +
+      p.days +
+      " " +
+      ukDayWord(p.days);
+
+    if (elClock) {
+      elClock.textContent = pad2(p.h) + ":" + pad2(p.m) + ":" + pad2(p.s);
+    }
+
+    if (elTotal) {
+      const totalMs = now - TOGETHER_START;
+      const totalDays = Math.floor(totalMs / MS_DAY);
+      const remTotal = totalMs - totalDays * MS_DAY;
+      const th = Math.floor(remTotal / MS_HOUR);
+      const tm = Math.floor((remTotal % MS_HOUR) / MS_MIN);
+      const ts = Math.floor((remTotal % MS_MIN) / MS_SEC);
+      elTotal.textContent =
+        totalDays + " " + ukDayWord(totalDays) + " " + pad2(th) + ":" + pad2(tm) + ":" + pad2(ts);
+    }
+  }
+
+  updateTogetherTimer();
+  setInterval(updateTogetherTimer, 1000);
+
   if (btn && textEl) {
     let last = -1;
     btn.addEventListener("click", function () {

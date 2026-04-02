@@ -36,7 +36,21 @@
         Бусічка, ти — та історія, яку я хочу перечитувати щодня. Ця сторінка — маленький космос лише
         про тебе.
       </p>
-      <button type="button" class="btn-ghost reveal reveal--delay-5" id="complimentBtn">
+      <div class="together-timer reveal reveal--delay-5" id="togetherTimer" aria-label="Скільки ми разом">
+        <p class="together-timer__main" id="togetherMain"></p>
+        <div class="together-timer__timers">
+          <div class="together-timer__timer-block">
+            <p class="together-timer__timer-caption">Від останнього 2-го о 00:25</p>
+            <p class="together-timer__clock" id="togetherClock"></p>
+          </div>
+          <div class="together-timer__timer-block">
+            <p class="together-timer__timer-caption">Усього з моменту, коли стали парою</p>
+            <p class="together-timer__clock together-timer__clock--total" id="togetherTotal"></p>
+          </div>
+        </div>
+        <p class="together-timer__since">Офіційно пара: 2 лютого 2026 о 00:25</p>
+      </div>
+      <button type="button" class="btn-ghost reveal reveal--delay-6" id="complimentBtn">
         Натисни — комплімент
       </button>
       <p class="compliment" id="complimentText" hidden></p>
