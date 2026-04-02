@@ -94,12 +94,14 @@ body.solitaire-active {
 
 .solitaire-overlay__panel {
   width: 100%;
-  max-width: 1100px;
+  max-width: min(1100px, 100%);
+  min-width: 0;
   min-height: 100%;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   padding: 0 clamp(0.75rem, 3vw, 1.5rem) max(1rem, env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
 }
 
 .solitaire-toolbar {
@@ -179,19 +181,29 @@ body.solitaire-active {
 .solitaire-root {
   flex: 1;
   min-height: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   overflow: auto;
   overflow-x: auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   touch-action: pan-x pan-y;
+  box-sizing: border-box;
 }
 
 .solitaire-board-wrap {
+  container-type: inline-size;
+  container-name: solitaire-board;
   overflow-x: auto;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .solitaire-board {
@@ -209,13 +221,36 @@ body.solitaire-active {
 
 @media (max-width: 520px) {
   .solitaire-board-wrap {
-    margin: 0 -0.5rem;
-    padding: 0 0.5rem 0.35rem;
+    margin: 0;
+    padding: 0 0 0.35rem;
+    overflow-x: auto;
   }
 
+  /* Усі 7 колон + проміжки вміщаються в ширину панелі (без обрізання) */
   .solitaire-board {
-    --card-w: clamp(44px, 12.8vw, 54px);
-    --stack-step: clamp(13px, 3.5vw, 18px);
+    --tbl-gap: 3px;
+    /* fallback, якщо браузер не знає cqw */
+    --card-w: max(
+      32px,
+      calc(
+        (
+            100vw - 2 * clamp(0.75rem, 3vw, 1.5rem) - 6 * var(--tbl-gap) - env(safe-area-inset-left, 0px) -
+              env(safe-area-inset-right, 0px)
+          ) / 7
+      )
+    );
+    --card-h: calc(var(--card-w) * 1.42);
+    --stack-step: clamp(10px, calc(var(--card-w) * 0.34), 17px);
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  @supports (width: 1cqw) {
+    .solitaire-board {
+      --card-w: max(32px, calc((100cqw - 6 * var(--tbl-gap)) / 7));
+    }
   }
 
   .solitaire-touch-hint {
@@ -240,13 +275,18 @@ body.solitaire-active {
 
   .solitaire-row--top {
     flex-wrap: nowrap;
-    min-width: min(100%, calc(6 * var(--card-w) + 5 * 5px + 2rem));
+    min-width: 0;
+    max-width: 100%;
+    gap: var(--tbl-gap);
   }
 
   .solitaire-tableau-row {
     flex-wrap: nowrap;
-    justify-content: flex-start;
-    gap: 5px;
+    justify-content: space-between;
+    gap: var(--tbl-gap);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .solitaire-tableau {
@@ -256,8 +296,16 @@ body.solitaire-active {
   }
 
   .solitaire-spacer {
-    flex: 0 0 0.35rem;
-    min-width: 0.35rem;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .solitaire-stockwaste {
+    gap: var(--tbl-gap);
+  }
+
+  .solitaire-foundations {
+    gap: var(--tbl-gap);
   }
 }
 
