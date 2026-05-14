@@ -889,7 +889,7 @@ main,
   position: fixed;
   bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
   right: max(1.25rem, env(safe-area-inset-right, 0px));
-  z-index: 90;
+  z-index: 120;
 }
 
 .music-player__btn {
