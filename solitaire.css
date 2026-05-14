@@ -1,5 +1,51 @@
 /* Klondike — рожева гама, кремові карти, чорні та рожеві масті */
 
+.heart-app-launch {
+  position: fixed;
+  bottom: calc(max(1rem, calc(0.75rem + env(safe-area-inset-bottom, 0px))) + 3.2rem);
+  left: max(0.75rem, env(safe-area-inset-left, 0px));
+  z-index: 85;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.85rem;
+  min-height: 2.85rem;
+  padding: 0.45rem 0.55rem;
+  font-family: var(--font-body);
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  text-decoration: none;
+  color: #fff5f9;
+  background: rgba(255, 105, 150, 0.28);
+  border: 1px solid rgba(255, 182, 210, 0.55);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition:
+    background 0.25s var(--ease),
+    border-color 0.25s var(--ease),
+    transform 0.2s var(--ease);
+}
+
+.heart-app-launch__glyph {
+  display: block;
+  transform: translateY(0.04em);
+}
+
+.heart-app-launch:hover {
+  background: rgba(255, 120, 165, 0.45);
+  border-color: rgba(255, 210, 225, 0.85);
+  transform: translateY(-2px);
+}
+
+.heart-app-launch:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .solitaire-launch {
   position: fixed;
   bottom: max(1rem, calc(0.75rem + env(safe-area-inset-bottom, 0px)));

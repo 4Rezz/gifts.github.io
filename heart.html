@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Серце</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #050505;
+        --pink-soft: #ff8fb1;
+        --pink-deep: #ff4d6d;
+        --brand-red: #ff003c;
+        --white80: rgba(255, 255, 255, 0.8);
+        --white40: rgba(255, 255, 255, 0.4);
+        --white20: rgba(255, 255, 255, 0.2);
+        --white10: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--white80);
+        font-family: "Fira Code", ui-monospace, monospace;
+      }
+
+      ::selection {
+        background-color: rgba(255, 0, 60, 0.3);
+      }
+
+      .root {
+        position: relative;
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .root.is-ready {
+        cursor: pointer;
+      }
+
+      .scanline {
+        width: 100%;
+        height: 100px;
+        z-index: 10;
+        background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(255, 255, 255, 0.02) 50%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        opacity: 0.1;
+        position: absolute;
+        bottom: 100%;
+        animation: scanline 10s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes scanline {
+        0% {
+          bottom: 100%;
+        }
+        100% {
+          bottom: -100px;
+        }
+      }
+
+      .terminal-cursor {
+        display: inline-block;
+        width: 0;
+        height: 1em;
+        border-right: 2px solid var(--pink-deep);
+        animation: blink 1s step-end infinite;
+        vertical-align: text-bottom;
+      }
+
+      @keyframes blink {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: var(--pink-deep);
+        }
+      }
+
+      .stage-console {
+        width: 100%;
+        max-width: 42rem;
+        padding: 2rem;
+        font-size: 0.9375rem;
+      }
+
+      @media (min-width: 768px) {
+        .stage-console {
+          font-size: 1.0625rem;
+        }
+      }
+
+      .row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
+      }
+
+      .row--status {
+        min-height: 1.5rem;
+      }
+
+      .tag-system {
+        color: rgba(255, 143, 177, 0.6);
+        flex-shrink: 0;
+      }
+
+      .status-ready {
+        color: #4ade80;
+        opacity: 0;
+        animation: fadeIn 0.4s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      .post-console {
+        padding-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: riseIn 0.45s ease forwards;
+      }
+
+      @keyframes riseIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hint {
+        color: var(--white40);
+        font-style: italic;
+        font-size: 0.9375rem;
+      }
+
+      .btn-decrypt {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid rgba(255, 77, 109, 0.3);
+        background: rgba(255, 77, 109, 0.05);
+        color: var(--pink-soft);
+        font: inherit;
+        cursor: pointer;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+
+      .btn-decrypt:hover {
+        background: rgba(255, 77, 109, 0.1);
+        border-color: rgba(255, 77, 109, 0.45);
+      }
+
+      .btn-decrypt svg {
+        transition: transform 0.3s;
+      }
+
+      .btn-decrypt:hover svg {
+        transform: rotate(12deg);
+      }
+
+      .btn-decrypt__label {
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        line-height: 1.25;
+        max-width: 14rem;
+        text-align: left;
+      }
+
+      @media (min-width: 480px) {
+        .btn-decrypt__label {
+          font-size: 13px;
+        }
+      }
+
+      .micro-hint {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.32);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .stage-reveal {
+        display: none;
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .stage-reveal.is-on {
+        display: flex;
+      }
+
+      #heartCanvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .decrypted-wrap {
+        position: relative;
+        z-index: 20;
+        text-align: center;
+        opacity: 0;
+        transform: scale(0.92);
+        pointer-events: none;
+      }
+
+      .decrypted-wrap.is-visible {
+        animation: decryptShow 1.5s ease 3s forwards;
+        pointer-events: auto;
+      }
+
+      @keyframes decryptShow {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .decrypted-title {
+        font-size: 1.25rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        margin: 0 0 0.5rem;
+        color: #a8e6ff;
+        text-shadow:
+          0 0 14px rgba(120, 210, 255, 0.55),
+          0 0 32px rgba(80, 180, 255, 0.28);
+      }
+
+      .decrypted-line {
+        width: 3rem;
+        height: 1px;
+        background: rgba(120, 200, 255, 0.45);
+        margin: 0 auto 2rem;
+      }
+
+      .btn-reencrypt {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.32);
+        font: inherit;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: color 0.25s;
+      }
+
+      .btn-reencrypt:hover {
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .corner-tl,
+      .corner-br {
+        position: absolute;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.16);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        z-index: 15;
+        pointer-events: none;
+      }
+
+      .corner-tl {
+        top: 2rem;
+        left: 2rem;
+        line-height: 1.6;
+      }
+
+      .corner-br {
+        bottom: 2rem;
+        right: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="root" aria-live="polite">
+      <div class="scanline" aria-hidden="true"></div>
+
+      <div id="stageConsole" class="stage-console">
+        <div class="row">
+          <span class="tag-system">[система]</span>
+          <span id="typeTarget"></span>
+        </div>
+        <div class="row row--status">
+          <span class="tag-system">[статус]</span>
+          <span id="statusReady" class="status-ready" hidden>ГОТОВО</span>
+        </div>
+        <div id="postConsole" class="post-console" hidden>
+          <p class="hint">&gt; Знайдено один зашифрований пакет для тебе.</p>
+          <button type="button" class="btn-decrypt" id="btnDecrypt" aria-label="Розшифрувати повідомлення">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span class="btn-decrypt__label">Розшифрувати повідомлення</span>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </button>
+          <p class="micro-hint">(або просто натисни будь-де)</p>
+        </div>
+      </div>
+
+      <div id="stageReveal" class="stage-reveal">
+        <canvas id="heartCanvas" aria-hidden="true"></canvas>
+        <div class="corner-tl" aria-hidden="true">
+          рядок: 420<br />
+          ід: 0xDEADBEEF<br />
+          тип: органічна_емоція
+        </div>
+        <div class="corner-br" aria-hidden="true">серце::розкриття // успіх</div>
+        <div id="decryptedWrap" class="decrypted-wrap">
+          <h2 class="decrypted-title">Розшифровано</h2>
+          <div class="decrypted-line" aria-hidden="true"></div>
+          <button type="button" class="btn-reencrypt" id="btnReencrypt" aria-label="Зашифрувати знову">Зашифрувати знову</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var TYPE_TEXT = "Ініціалізація серця Софійки.ПРОТОКОЛ_v2.0...";
+        var TYPE_DELAY = 30;
+
+        var root = document.getElementById("root");
+        var stageConsole = document.getElementById("stageConsole");
+        var stageReveal = document.getElementById("stageReveal");
+        var typeTarget = document.getElementById("typeTarget");
+        var statusReady = document.getElementById("statusReady");
+        var postConsole = document.getElementById("postConsole");
+        var btnDecrypt = document.getElementById("btnDecrypt");
+        var btnReencrypt = document.getElementById("btnReencrypt");
+        var canvas = document.getElementById("heartCanvas");
+        var decryptedWrap = document.getElementById("decryptedWrap");
+
+        var consoleFinished = false;
+        var typeTimer = null;
+        var canvasRaf = null;
+        var canvasCleanup = null;
+
+        function clearTypeTimer() {
+          if (typeTimer !== null) {
+            clearTimeout(typeTimer);
+            typeTimer = null;
+          }
+        }
+
+        function runTypewriter() {
+          clearTypeTimer();
+          consoleFinished = false;
+          typeTarget.textContent = "";
+          statusReady.hidden = true;
+          postConsole.hidden = true;
+          root.classList.remove("is-ready");
+
+          var i = 0;
+          function step() {
+            if (i < TYPE_TEXT.length) {
+              typeTarget.textContent += TYPE_TEXT.charAt(i);
+              i++;
+              typeTimer = setTimeout(step, TYPE_DELAY);
+            } else {
+              consoleFinished = true;
+              statusReady.hidden = false;
+              postConsole.hidden = false;
+              root.classList.add("is-ready");
+            }
+          }
+          step();
+        }
+
+        function stopCanvas() {
+          if (canvasRaf !== null) {
+            cancelAnimationFrame(canvasRaf);
+            canvasRaf = null;
+          }
+          if (canvasCleanup) {
+            canvasCleanup();
+            canvasCleanup = null;
+          }
+        }
+
+        function startHeartCanvas() {
+          stopCanvas();
+          var ctx = canvas.getContext("2d");
+          if (!ctx) return;
+
+          var points = [];
+          var text = "я тебе кохаю";
+          var fontSize = 16;
+          var start = null;
+
+          function initPoints() {
+            points = [];
+            var w = canvas.width;
+            var h = canvas.height;
+            var cx = w / 2;
+            var cy = h / 2;
+            var scale = Math.min(w, h) / 45;
+
+            for (var t = 0; t < Math.PI * 2; t += 0.05) {
+              var x = 16 * Math.pow(Math.sin(t), 3);
+              var y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+              points.push({
+                x: cx + x * scale,
+                y: cy + y * scale,
+                alpha: 0,
+                targetAlpha: 0.8 + Math.random() * 0.2,
+                delay: Math.random() * 2000,
+              });
+            }
+            for (var s = 0.2; s < 1; s += 0.2) {
+              for (var t2 = 0; t2 < Math.PI * 2; t2 += 0.1) {
+                var x2 = 16 * Math.pow(Math.sin(t2), 3);
+                var y2 = -(13 * Math.cos(t2) - 5 * Math.cos(2 * t2) - 2 * Math.cos(3 * t2) - Math.cos(4 * t2));
+                points.push({
+                  x: cx + x2 * scale * s,
+                  y: cy + y2 * scale * s,
+                  alpha: 0,
+                  targetAlpha: 0.4 + Math.random() * 0.4,
+                  delay: Math.random() * 3000,
+                });
+              }
+            }
+          }
+
+          function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initPoints();
+            start = null;
+          }
+
+          function onResize() {
+            resize();
+          }
+
+          function draw(time) {
+            if (start === null) start = time;
+            var elapsed = time - start;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = fontSize + 'px "Fira Code", monospace';
+            for (var j = 0; j < points.length; j++) {
+              var p = points[j];
+              if (elapsed > p.delay) {
+                p.alpha += (p.targetAlpha - p.alpha) * 0.02;
+              }
+              ctx.fillStyle = "rgba(255, 77, 109, " + p.alpha + ")";
+              var tw = ctx.measureText(text).width;
+              ctx.fillText(text, p.x - tw / 2, p.y);
+            }
+            canvasRaf = requestAnimationFrame(draw);
+          }
+
+          window.addEventListener("resize", onResize);
+          resize();
+          canvasRaf = requestAnimationFrame(draw);
+
+          canvasCleanup = function () {
+            window.removeEventListener("resize", onResize);
+          };
+        }
+
+        function goReveal() {
+          root.classList.remove("is-ready");
+          stageConsole.style.display = "none";
+          stageReveal.classList.add("is-on");
+          decryptedWrap.classList.remove("is-visible");
+          void decryptedWrap.offsetWidth;
+          decryptedWrap.classList.add("is-visible");
+          startHeartCanvas();
+        }
+
+        function goConsole() {
+          stopCanvas();
+          stageReveal.classList.remove("is-on");
+          stageConsole.style.display = "block";
+          decryptedWrap.classList.remove("is-visible");
+          runTypewriter();
+        }
+
+        root.addEventListener("click", function () {
+          if (consoleFinished && stageConsole.style.display !== "none") {
+            goReveal();
+          }
+        });
+
+        btnDecrypt.addEventListener("click", function (e) {
+          e.stopPropagation();
+          goReveal();
+        });
+
+        btnReencrypt.addEventListener("click", function (e) {
+          e.stopPropagation();
+          goConsole();
+        });
+
+        runTypewriter();
+      })();
+    </script>
+  </body>
+</html>
